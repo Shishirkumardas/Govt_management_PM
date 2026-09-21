@@ -1,0 +1,53 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: govos-postgres
+    environment:
+      POSTGRES_DB: govos
+      POSTGRES_USER: govos
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-govos_secret}
+    ports:
+      - "5432:5432"
+    volumes:
+      - govos_pg:/var/lib/postgresql/data
+      - ./backend/src/main/resources/db/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U govos -d govos"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: govos-redis
+    ports:
+      - "6379:6379"
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - govos_redis:/data
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: govos-backend
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/govos
+      SPRING_DATASOURCE_USERNAME: govos
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-govos_secret}
+      JPA_DDL_AUTO: update
+      GOVOS_JWT_SECRET: ${GOVOS_JWT_SECRET:-GovOS-Prod-Change-This-Secret-Key-256bits-Minimum-Length!!}
+      GOVOS_CORS_ORIGINS: ${GOVOS_CORS_ORIGINS:-http://localhost:3000}
+      XAI_API_KEY: ${XAI_API_KEY:-}
+    ports:
+      - "8080:8080"
+
+volumes:
+  govos_pg:
+  govos_redis:

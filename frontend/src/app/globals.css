@@ -1,0 +1,280 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+  Bangladesh Government visual identity
+  ----------------------------------------
+  National flag (Flag Rules 1972 / Pantone approximations used digitally):
+  - Bottle green (field):  #006A4E  (alt #006747 · Pantone 342 C)
+  - Flag red (disc):       #DA291C  (alt #F42A41 · Pantone 485 C)
+  Green = lush land / youth; Red = rising sun / sacrifice.
+  UI primary = bottle green; red reserved for alerts / national accent.
+*/
+
+:root,
+html.light {
+  color-scheme: light;
+
+  /* Brand */
+  --bd-green: #006a4e;
+  --bd-green-deep: #004d38;
+  --bd-green-mid: #0a8f6a;
+  --bd-green-soft: #e6f5ef;
+  --bd-green-muted: #c5e8d9;
+  --bd-red: #da291c;
+  --bd-red-soft: #fde8e6;
+  --bd-gold: #c5a572;
+
+  /* Surfaces */
+  --surface: #f4faf7;
+  --surface-elevated: #ffffff;
+  --surface-muted: #e8f3ed;
+  --surface-hover: rgba(0, 106, 78, 0.06);
+  --surface-sidebar: #ffffff;
+  --surface-header: rgba(244, 250, 247, 0.92);
+
+  /* Text */
+  --foreground: #0b1f17;
+  --foreground-muted: #3d5c4e;
+  --muted: #5f7a6c;
+  --placeholder: #8aa396;
+
+  /* Borders / focus */
+  --border: rgba(0, 106, 78, 0.14);
+  --border-strong: rgba(0, 106, 78, 0.28);
+  --ring: rgba(0, 106, 78, 0.22);
+
+  /* Semantic */
+  --success: #006a4e;
+  --warning: #b45309;
+  --danger: #da291c;
+  --info: #0e7490;
+
+  /* Map / chrome */
+  --map-bg: #dceee5;
+  --scrollbar: #9fc4b3;
+  --shadow: 0 8px 30px rgba(0, 77, 56, 0.08);
+}
+
+html.dark {
+  color-scheme: dark;
+
+  --bd-green: #1fad7a;
+  --bd-green-deep: #006a4e;
+  --bd-green-mid: #34d399;
+  --bd-green-soft: rgba(0, 106, 78, 0.28);
+  --bd-green-muted: rgba(31, 173, 122, 0.16);
+  --bd-red: #f87171;
+  --bd-red-soft: rgba(218, 41, 28, 0.2);
+  --bd-gold: #e0c48a;
+
+  --surface: #061510;
+  --surface-elevated: #0c241c;
+  --surface-muted: #0f2e24;
+  --surface-hover: rgba(31, 173, 122, 0.1);
+  --surface-sidebar: #0a1f18;
+  --surface-header: rgba(6, 21, 16, 0.9);
+
+  --foreground: #e8f7f0;
+  --foreground-muted: #b7d4c6;
+  --muted: #87a898;
+  --placeholder: #5f7a6c;
+
+  --border: rgba(31, 173, 122, 0.18);
+  --border-strong: rgba(31, 173, 122, 0.35);
+  --ring: rgba(31, 173, 122, 0.28);
+
+  --success: #34d399;
+  --warning: #fbbf24;
+  --danger: #f87171;
+  --info: #38bdf8;
+
+  --map-bg: #0a1f18;
+  --scrollbar: #1f5c47;
+  --shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+}
+
+/* Default before JS hydrates */
+html:not(.light):not(.dark) {
+  color-scheme: light;
+}
+
+body {
+  background: var(--surface);
+  color: var(--foreground);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar) transparent;
+}
+
+.prose-briefing {
+  white-space: pre-wrap;
+  line-height: 1.6;
+}
+
+/* ——— Shared UI primitives (theme-aware) ——— */
+
+.card {
+  @apply rounded-xl border p-5;
+  background: var(--surface-elevated);
+  border-color: var(--border);
+  box-shadow: var(--shadow);
+}
+
+.btn-primary {
+  @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium transition disabled:opacity-50;
+  background: var(--bd-green);
+  color: #ffffff !important;
+}
+html.dark .btn-primary {
+  background: var(--bd-green-deep);
+  color: #ffffff !important;
+}
+.btn-primary:hover {
+  filter: brightness(1.08);
+}
+
+.btn-ghost {
+  @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm transition;
+  background: var(--surface-hover);
+  color: var(--foreground-muted);
+  border: 1px solid var(--border);
+}
+.btn-ghost:hover {
+  color: var(--foreground);
+  background: var(--bd-green-muted);
+}
+
+.input {
+  @apply w-full rounded-lg px-3 py-2.5 text-sm outline-none transition;
+  background: var(--surface-muted);
+  color: var(--foreground);
+  border: 1px solid var(--border);
+}
+.input::placeholder {
+  color: var(--placeholder);
+}
+.input:focus {
+  border-color: var(--bd-green);
+  box-shadow: 0 0 0 3px var(--ring);
+}
+
+.table-wrap {
+  @apply overflow-x-auto rounded-xl border;
+  border-color: var(--border);
+}
+
+table.data {
+  @apply w-full text-sm;
+}
+
+table.data th {
+  @apply text-left text-xs uppercase tracking-wide font-medium px-4 py-3 border-b;
+  color: var(--muted);
+  background: var(--surface-muted);
+  border-color: var(--border);
+}
+
+table.data td {
+  @apply px-4 py-3 border-b;
+  color: var(--foreground-muted);
+  border-color: var(--border);
+}
+
+table.data tr:hover td {
+  background: var(--surface-hover);
+}
+
+/* Brand badge / BD mark */
+.bd-mark {
+  @apply h-9 w-9 rounded-lg grid place-items-center font-bold text-sm text-white;
+  background: linear-gradient(135deg, var(--bd-green-mid), var(--bd-green-deep));
+  box-shadow: 0 8px 20px rgba(0, 106, 78, 0.35);
+  position: relative;
+}
+.bd-mark::after {
+  content: "";
+  position: absolute;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 9999px;
+  background: var(--bd-red);
+  top: 0.35rem;
+  right: 0.35rem;
+  box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.35);
+}
+
+.bd-chip {
+  @apply text-xs px-2.5 py-1 rounded-full font-medium whitespace-nowrap;
+  background: var(--bd-green-muted);
+  color: var(--bd-green-deep);
+  border: 1px solid var(--border-strong);
+}
+html.dark .bd-chip {
+  color: var(--bd-green-mid);
+}
+
+.nav-active {
+  background: var(--bd-green-muted);
+  color: var(--bd-green-deep);
+  border: 1px solid var(--border-strong);
+}
+html.dark .nav-active {
+  color: var(--bd-green-mid);
+}
+
+.nav-idle {
+  color: var(--foreground-muted);
+  border: 1px solid transparent;
+}
+.nav-idle:hover {
+  background: var(--surface-hover);
+}
+
+/* Leaflet */
+.leaflet-container {
+  font: inherit;
+  background: var(--map-bg);
+}
+
+.leaflet-control-attribution {
+  background: color-mix(in srgb, var(--surface-elevated) 90%, transparent) !important;
+  color: var(--muted) !important;
+  font-size: 10px !important;
+}
+
+.leaflet-control-attribution a {
+  color: var(--bd-green) !important;
+}
+
+.safe-top {
+  padding-top: max(0.75rem, env(safe-area-inset-top));
+}
+
+.safe-bottom {
+  padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+}
+
+@media (max-width: 768px) {
+  .input {
+    font-size: 16px;
+  }
+}
+
+/* National ribbon accent (green + red stripe) */
+.bd-ribbon {
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    var(--bd-green-deep) 0%,
+    var(--bd-green) 45%,
+    var(--bd-red) 45%,
+    var(--bd-red) 55%,
+    var(--bd-green) 55%,
+    var(--bd-green-mid) 100%
+  );
+}
