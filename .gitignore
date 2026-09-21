@@ -25,3 +25,7 @@ Thumbs.db
 
 # Local Google Drive temp
 .tmp.driveupload/
+
+# Nested git leftover
+**/.git.nested_backup/
+
